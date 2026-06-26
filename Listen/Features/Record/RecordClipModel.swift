@@ -45,6 +45,18 @@ final class RecordClipModel: ObservableObject {
         hasRecording = pendingFilename != nil
     }
 
+    func cancel() {
+        if isRecording {
+            audio.stopRecording()
+        }
+        if let filename = pendingFilename {
+            try? store.delete(filename: filename)
+        }
+        pendingFilename = nil
+        isRecording = false
+        hasRecording = false
+    }
+
     func save() throws -> Clip {
         guard let filename = pendingFilename else {
             throw RecordError.noRecording
@@ -57,6 +69,8 @@ final class RecordClipModel: ObservableObject {
             createdAt: now())
         context.insert(clip)
         try context.save()
+        pendingFilename = nil
+        hasRecording = false
         return clip
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct RecordView: View {
     @StateObject var model: RecordClipModel
     @Environment(\.dismiss) private var dismiss
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationStack {
@@ -28,14 +29,28 @@ struct RecordView: View {
                 }
             }
             .navigationTitle("录新片段")
+            .alert("保存失败",
+                   isPresented: Binding(get: { errorMessage != nil },
+                                        set: { if !$0 { errorMessage = nil } })) {
+                Button("好", role: .cancel) {}
+            } message: {
+                Text(errorMessage ?? "")
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消") { dismiss() }
+                    Button("取消") {
+                        model.cancel()
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("保存") {
-                        _ = try? model.save()
-                        dismiss()
+                        do {
+                            _ = try model.save()
+                            dismiss()
+                        } catch {
+                            errorMessage = "保存失败：\(error.localizedDescription)"
+                        }
                     }
                     .disabled(!model.hasRecording)
                 }

@@ -37,6 +37,10 @@ final class PracticeModel: ObservableObject {
         try audio.play(filename: clip.originalAudioFilename, loop: loop)
     }
 
+    func stopPlayback() {
+        audio.stop()
+    }
+
     func startAttempt() throws {
         let filename = store.makeFilename(prefix: "mine", id: idProvider())
         try audio.startRecording(to: filename)
@@ -48,9 +52,10 @@ final class PracticeModel: ObservableObject {
         audio.stopRecording()
         isRecording = false
         guard let filename = pendingFilename else { return }
-        let attempt = Attempt(audioFilename: filename, createdAt: now())
+        let timestamp = now()
+        let attempt = Attempt(audioFilename: filename, createdAt: timestamp)
         clip.attempts.append(attempt)
-        clip.lastPracticedAt = now()
+        clip.lastPracticedAt = timestamp
         try context.save()
         pendingFilename = nil
     }

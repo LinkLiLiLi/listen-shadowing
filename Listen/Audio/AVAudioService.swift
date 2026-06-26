@@ -16,6 +16,9 @@ final class AVAudioService: NSObject, AudioService {
     var isPlaying: Bool { player?.isPlaying ?? false }
 
     func startRecording(to filename: String) throws {
+        player?.stop()
+        player = nil
+        sequenceQueue = []
         try store.ensureRootExists()
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playAndRecord, mode: .default,
@@ -39,6 +42,8 @@ final class AVAudioService: NSObject, AudioService {
     func stopRecording() {
         recorder?.stop()
         recorder = nil
+        try? AVAudioSession.sharedInstance()
+            .setActive(false, options: .notifyOthersOnDeactivation)
     }
 
     func play(filename: String, loop: Bool) throws {
@@ -55,9 +60,12 @@ final class AVAudioService: NSObject, AudioService {
         player?.stop()
         player = nil
         sequenceQueue = []
+        try? AVAudioSession.sharedInstance()
+            .setActive(false, options: .notifyOthersOnDeactivation)
     }
 
     private func startPlayer(filename: String, loop: Bool) throws {
+        player?.stop()
         let url = store.url(for: filename)
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw AudioServiceError.fileNotFound(filename)

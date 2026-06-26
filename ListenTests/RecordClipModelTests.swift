@@ -49,4 +49,16 @@ final class RecordClipModelTests: XCTestCase {
         let clip = try model.save()
         XCTAssertEqual(clip.title, "未命名")
     }
+
+    func test_cancel_resetsStateAndDeletesPending() throws {
+        let (model, audio, _) = try makeModel()
+        try model.startRecording()
+        XCTAssertTrue(model.isRecording)
+        model.cancel()
+        XCTAssertFalse(model.isRecording)
+        XCTAssertFalse(model.hasRecording)
+        XCTAssertFalse(audio.isRecording)
+        // 取消后保存应抛出 noRecording（pending 已清空）
+        XCTAssertThrowsError(try model.save())
+    }
 }

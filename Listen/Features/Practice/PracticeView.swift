@@ -22,6 +22,11 @@ struct PracticeView: View {
                     Label("循环听原声", systemImage: "repeat")
                 }
                 Button {
+                    model.stopPlayback()
+                } label: {
+                    Label("停止播放", systemImage: "stop.fill")
+                }
+                Button {
                     toggleAttempt()
                 } label: {
                     Label(model.isRecording ? "停止录音" : "录我的跟读",

@@ -16,3 +16,5 @@ Task 4: complete (commits 475371a..89cb318, review clean — 3 Important 已修�
 Task 5: complete (commits 837d90e..038e0f8, review clean — spec ✅)
   - 注意: iOS 26 ModelContext 不强引用 ModelContainer; RecordClipModel 持有 context.container 保活 (either-acceptable)
   - minor (defer to final): save() 后未清 pendingFilename(可重复保存); 测试未断言 createdAt
+Task 6: complete (commits df2ca67..36a3d09, review clean — spec ✅, 5/5)
+  - minor (defer to final): stopAttempt() now() 调用两次时间戳不一致; save 抛错时 pendingFilename 未清; playAttempt 无独立测试

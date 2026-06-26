@@ -24,3 +24,7 @@ Task 8: complete (commits ad7b6b7..8b37283, review clean — spec ✅, BUILD SUC
   - minor (defer to final): EditClipView save try? 无提示; "未分组" 名称冲突边界; ForEach id 用合集名
 
 == 所有任务完成。待整分支最终评审。==
+
+== 整分支最终评审 (opus): Ready to merge WITH FIXES ==
+final fixes (commit 6ee93d3): C1 取消停录+删孤儿文件; I1 录音/播放前先停在放(修复跟读串入原声)+停止播放按钮; I2 save 错误弹窗(RecordView/EditClipView); I3 session deactivate; M1 save 后清 pending; M2 时间戳取一次。21/21 测试通过, BUILD SUCCEEDED。
+follow-up tickets (评审认可可延后): M3 record→不保存的孤儿文件清理; M4 序列播放缺文件静默中断; M5 ModelContainer+Preview 命名; M6 "未分组" 名称冲突/ForEach id; 测试补 playAttempt/stop-resets-isPlaying/nullify 规则。

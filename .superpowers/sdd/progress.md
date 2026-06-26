@@ -18,3 +18,5 @@ Task 5: complete (commits 837d90e..038e0f8, review clean — spec ✅)
   - minor (defer to final): save() 后未清 pendingFilename(可重复保存); 测试未断言 createdAt
 Task 6: complete (commits df2ca67..36a3d09, review clean — spec ✅, 5/5)
   - minor (defer to final): stopAttempt() now() 调用两次时间戳不一致; save 抛错时 pendingFilename 未清; playAttempt 无独立测试
+Task 7: complete (commits 76c5008..212e7d0, review clean — spec ✅, BUILD SUCCEEDED, 全套 19/19, app 启动无崩溃) — 最小可用 app 达成
+  - minor (defer to final): try? 静默吞错(尤其 save 路径无提示); @StateObject 外部传参契约脆弱; RecordView 取消时不停录(靠 deinit, 但 recorder 实际由 AVAudioService 持有→可能继续录)

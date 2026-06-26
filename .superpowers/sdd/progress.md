@@ -6,3 +6,4 @@
 
 ## 任务进度
 （每个任务 review 通过后追加一行）
+Task 1: complete (commit f348073, 工程脚手架 + 冒烟测试 ** TEST SUCCEEDED **)

@@ -18,8 +18,12 @@ struct RecordingStore {
 
     func delete(filename: String) throws {
         let target = url(for: filename)
-        if FileManager.default.fileExists(atPath: target.path) {
+        do {
             try FileManager.default.removeItem(at: target)
+        } catch let error as NSError
+            where error.domain == NSCocoaErrorDomain
+                && error.code == NSFileNoSuchFileError {
+            // 文件不存在视为已删除，不报错
         }
     }
 

@@ -7,3 +7,5 @@
 ## 任务进度
 （每个任务 review 通过后追加一行）
 Task 1: complete (commit f348073, 工程脚手架 + 冒烟测试 ** TEST SUCCEEDED **)
+Task 2: complete (commits 07a8e60..097d365, review clean)
+  - minor (defer to final): ModelContainer+Preview.swift 命名暗示 extension 实为自由函数; PracticeCollection nullify 规则无独立测试

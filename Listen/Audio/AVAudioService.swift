@@ -6,7 +6,6 @@ final class AVAudioService: NSObject, AudioService {
     private var recorder: AVAudioRecorder?
     private var player: AVAudioPlayer?
     private var sequenceQueue: [String] = []
-    private var loopCurrent = false
 
     init(store: RecordingStore) {
         self.store = store
@@ -31,7 +30,9 @@ final class AVAudioService: NSObject, AudioService {
         ]
         let rec = try AVAudioRecorder(url: store.url(for: filename),
                                       settings: settings)
-        rec.record()
+        guard rec.record() else {
+            throw AudioServiceError.recorderUnavailable
+        }
         recorder = rec
     }
 
@@ -47,7 +48,6 @@ final class AVAudioService: NSObject, AudioService {
     func playSequence(_ filenames: [String]) throws {
         sequenceQueue = Array(filenames.dropFirst())
         guard let first = filenames.first else { return }
-        loopCurrent = false
         try startPlayer(filename: first, loop: false)
     }
 
@@ -68,7 +68,6 @@ final class AVAudioService: NSObject, AudioService {
         let p = try AVAudioPlayer(contentsOf: url)
         p.delegate = self
         p.numberOfLoops = loop ? -1 : 0
-        loopCurrent = loop
         p.play()
         player = p
     }
@@ -79,6 +78,7 @@ extension AVAudioService: AVAudioPlayerDelegate {
                                      successfully flag: Bool) {
         guard !sequenceQueue.isEmpty else { return }
         let next = sequenceQueue.removeFirst()
+        // TODO: 若序列中某文件缺失，这里会静默中断；后续可上报错误
         try? startPlayer(filename: next, loop: false)
     }
 }

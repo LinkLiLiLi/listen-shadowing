@@ -5,6 +5,21 @@
 > 理念：英语是表达性语言，日常沟通靠固定的口语格式。掌握常用句型即可应对约 80% 的日常交流。
 > 这个 app 帮你从美剧/电影对话里把这些句型听进去、读出来、内化掉。
 
+## 界面
+
+<table>
+  <tr>
+    <td align="center"><b>片段库</b></td>
+    <td align="center"><b>录新片段</b></td>
+    <td align="center"><b>练习</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/library.png" width="240" alt="片段库"></td>
+    <td><img src="docs/screenshots/record.png" width="240" alt="录新片段"></td>
+    <td><img src="docs/screenshots/practice.png" width="240" alt="练习"></td>
+  </tr>
+</table>
+
 ## 功能
 
 - 🎙️ **录原声** — 手机麦克风外放录下美剧/电影里的一句对话

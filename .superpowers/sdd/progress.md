@@ -13,3 +13,6 @@ Task 3: complete (commits a8b356f..bbe034d, review clean — Important TOCTOU �
   - minor (defer to final): defaultStore() urls[0] 强下标; 测试 tempDir 未清理
 Task 4: complete (commits 475371a..89cb318, review clean — 3 Important 已修复, 3/3 pass)
   - minor (defer to final): playSequence 测试未断言 isPlaying; 无 stop() 重置 isPlaying 测试; RED 未单独捕获
+Task 5: complete (commits 837d90e..038e0f8, review clean — spec ✅)
+  - 注意: iOS 26 ModelContext 不强引用 ModelContainer; RecordClipModel 持有 context.container 保活 (either-acceptable)
+  - minor (defer to final): save() 后未清 pendingFilename(可重复保存); 测试未断言 createdAt

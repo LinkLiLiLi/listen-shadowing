@@ -10,24 +10,32 @@ struct ClipLibraryView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(clips) { clip in
-                    NavigationLink {
-                        PracticeView(model: PracticeModel(
-                            clip: clip,
-                            audio: environment.audio,
-                            store: environment.store,
-                            context: context))
-                    } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(clip.title).font(.headline)
-                            Text(clip.scriptText)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(1)
+                ForEach(groupedClips, id: \.0) { name, group in
+                    Section(name) {
+                        ForEach(group) { clip in
+                            NavigationLink {
+                                PracticeView(model: PracticeModel(
+                                    clip: clip,
+                                    audio: environment.audio,
+                                    store: environment.store,
+                                    context: context))
+                            } label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(clip.title).font(.headline)
+                                    Text(clip.scriptText)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(1)
+                                }
+                            }
+                            .swipeActions {
+                                Button("删除", role: .destructive) {
+                                    deleteClip(clip)
+                                }
+                            }
                         }
                     }
                 }
-                .onDelete(perform: deleteClips)
             }
             .navigationTitle("片段库")
             .toolbar {
@@ -56,15 +64,18 @@ struct ClipLibraryView: View {
         }
     }
 
-    private func deleteClips(_ offsets: IndexSet) {
-        for index in offsets {
-            let clip = clips[index]
-            try? environment.store.delete(filename: clip.originalAudioFilename)
-            for attempt in clip.attempts {
-                try? environment.store.delete(filename: attempt.audioFilename)
-            }
-            context.delete(clip)
+    private var groupedClips: [(String, [Clip])] {
+        Dictionary(grouping: clips) { $0.collection?.name ?? "未分组" }
+            .map { ($0.key, $0.value) }
+            .sorted { $0.0 < $1.0 }
+    }
+
+    private func deleteClip(_ clip: Clip) {
+        try? environment.store.delete(filename: clip.originalAudioFilename)
+        for attempt in clip.attempts {
+            try? environment.store.delete(filename: attempt.audioFilename)
         }
+        context.delete(clip)
         try? context.save()
     }
 }

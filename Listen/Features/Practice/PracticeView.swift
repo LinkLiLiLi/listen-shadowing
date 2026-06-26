@@ -2,6 +2,8 @@ import SwiftUI
 
 struct PracticeView: View {
     @StateObject var model: PracticeModel
+    @Environment(\.modelContext) private var editContext
+    @State private var showingEdit = false
 
     var body: some View {
         List {
@@ -57,6 +59,15 @@ struct PracticeView: View {
             }
         }
         .navigationTitle(model.clip.title)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("编辑") { showingEdit = true }
+            }
+        }
+        .sheet(isPresented: $showingEdit) {
+            EditClipView(model: EditClipModel(
+                clip: model.clip, context: editContext))
+        }
     }
 
     private func toggleAttempt() {
